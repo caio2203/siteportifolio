@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="pt-br" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meu Portfólio</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    :root {
+      /* Variáveis do tema claro (padrão) */
+      --background: #E8F1F2;
+      --text-color: #13293D;
+      --header-gradient-start: #B3E0FF;
+      --header-gradient-end: #7FCDFF;
+      --section-background: white;
+      --project-background: #F0F8FF;
+      --nav-background: #247BA0;
+      --nav-text: white;
+      --accent-color: #006494;
+      --shadow-color: rgba(0, 0, 0, 0.1);
+      --shadow-hover: rgba(0, 0, 0, 0.1);
+      --border-color: #006494;
+    }
+
+    /* Tema escuro */
+    [data-theme="dark"] {
+      --background: #13293D;
+      --text-color: #E8F1F2;
+      --header-gradient-start: #006494;
+      --header-gradient-end: #247BA0;
+      --section-background: rgba(0, 0, 0, 0.1);
+      --project-background: #006494;
+      --nav-background: #247BA0;
+      --nav-text: #E8F1F2;
+      --accent-color: #1B98E0;
+      --shadow-color: rgba(0, 0, 0, 0.2);
+      --shadow-hover: rgba(0, 0, 0, 0.2);
+      --border-color: #1B98E0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--background);
+      color: var(--text-color);
+      line-height: 1.6;
+      overflow-x: hidden;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--header-gradient-start), var(--header-gradient-end));
+      padding: 3rem 2rem;
+      text-align: center;
+      animation: fadeInDown 1s ease-in-out;
+      box-shadow: 0 4px 12px var(--shadow-color);
+      position: relative;
+      min-height: 300px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .header-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .profile-image {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid white;
+      box-shadow: 0 4px 12px var(--shadow-color);
+      margin-bottom: 1rem;
+      transition: transform 0.5s ease-out, box-shadow 0.3s ease;
+    }
+
+    .floating-images {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .floating-image {
+      position: absolute;
+      opacity: 0.7;
+      transition: all 0.8s ease-out;
+      filter: drop-shadow(0 4px 8px var(--shadow-color));
+      max-width: 80px;
+    }
+
+    .floating-image:nth-child(1) {
+      width: 80px;
+      top: 20%;
+      left: 10%;
+    }
+    .floating-image:nth-child(2) {
+      width: 60px;
+      top: 60%;
+      left: 5%;
+    }
+    .floating-image:nth-child(3) {
+      width: 70px;
+      top: 30%;
+      right: 10%;
+    }
+    .floating-image:nth-child(4) {
+      width: 90px;
+      bottom: 20%;
+      right: 15%;
+    }
+
+    .floating-image.active {
+      opacity: 0.9;
+      transform: scale(1.1);
+    }
+
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    nav {
+      background: var(--nav-background);
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      padding: 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      animation: slideIn 1.2s ease-in-out;
+      border-bottom: 2px solid var(--border-color);
+      transition: background 0.3s ease, border-bottom 0.3s ease;
+    }
+
+    nav a {
+      color: var(--nav-text);
+      text-decoration: none;
+      font-weight: bold;
+      padding: 0.5rem 1.5rem;
+      border-radius: 4px;
+      background-color: rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    nav a:hover {
+      background-color: var(--accent-color);
+      transform: scale(1.05);
+    }
+
+    section {
+      padding: 3rem 2rem;
+      max-width: 900px;
+      margin: 2rem auto;
+      animation: fadeIn 1s ease-in;
+      background-color: var(--section-background);
+      border-radius: 8px;
+      position: relative;
+      z-index: 2;
+      box-shadow: 0 2px 10px var(--shadow-color);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    section h2 {
+      color: var(--accent-color);
+      margin-bottom: 1rem;
+      position: relative;
+      display: inline-block;
+      padding-bottom: 0.5rem;
+      transition: color 0.3s ease;
+    }
+
+    section h2::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 50%;
+      height: 3px;
+      background: var(--accent-color);
+      transition: background 0.3s ease;
+    }
+
+    .project {
+      background: var(--project-background);
+      margin-bottom: 1.5rem;
+      padding: 1rem;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      border-left: 4px solid var(--border-color);
+    }
+
+    .project:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px var(--shadow-hover);
+    }
+
+    footer {
+      text-align: center;
+      background: linear-gradient(135deg, var(--nav-background), var(--accent-color));
+      padding: 1rem;
+      color: var(--nav-text);
+      animation: fadeInUp 1s ease-in-out;
+      transition: background 0.3s ease;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    #back-to-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: var(--accent-color);
+      color: white;
+      width: 3rem;
+      height: 3rem;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-decoration: none;
+      font-size: 1.5rem;
+      box-shadow: 0 2px 10px var(--shadow-color);
+      opacity: 0;
+      transition: opacity 0.3s, background 0.3s ease;
+      z-index: 99;
+    }
+
+    #back-to-top.visible {
+      opacity: 1;
+    }
+
+    /* Botão de alternância de tema */
+    #theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: var(--accent-color);
+      color: white;
+      width: 3rem;
+      height: 3rem;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      z-index: 1000;
+      box-shadow: 0 2px 10px var(--shadow-color);
+      border: none;
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+
+    #theme-toggle:hover {
+      transform: scale(1.1);
+    }
+
+    #theme-toggle i {
+      font-size: 1.2rem;
+      transition: transform 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateY(-100%);
+      }
+      to {
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      nav a {
+        width: 100%;
+        text-align: center;
+      }
+      section {
+        padding: 2rem 1rem;
+      }
+      .floating-image {
+        max-width: px;
+      }
+      #theme-toggle {
+        top: 0.5rem;
+        right: 0.5rem;
+        width: 2.5rem;
+        height: 2.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <button id="theme-toggle" title="Alternar tema">
+    <i class="fas fa-moon"></i>
+  </button>
+
+  <header>
+    <div class="floating-images">
+      <img src="https://cdn-icons-png.flaticon.com/512/2777/2777154.png" alt="Python" class="floating-image">
+      <img src="https://cdn-icons-png.flaticon.com/512/4492/4492311.png" alt="SQL" class="floating-image">
+      <img src="https://cdn-icons-png.flaticon.com/512/2103/2103633.png" alt="Power BI" class="floating-image">
+      <img src="https://cdn-icons-png.flaticon.com/512/2282/2282188.png" alt="Data Analysis" class="floating-image">
+    </div>
+    
+<style>
+  .floating-images {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin: 20px 0;
+  }
+
+  .floating-image {
+    width: 60px;
+    height: 60px;
+    animation: float 3s ease-in-out infinite;
+    transition: transform 0.3s ease;
+  }
+
+  .floating-image:hover {
+    transform: scale(1.2);
+  }
+
+  @keyframes float {
+    0% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+</style>
+
+    <div class="header-content">
+     <!-- <img src="perfil.jpg.jpg" alt="Caio Gonçalves Vieira" class="profile-image"> -->
+      <h1>Caio Gonçalves Vieira</h1>
+      <p>Analista/Cientista de Dados | Aprimorando suas análises</p>
+    </div>
+  </header>
+
+<style>
+  .profile-image {
+    width: 150px;      /* largura */
+    height: 200px;     /* altura → proporção 3:4 */
+    object-fit: cover; /* para preencher sem distorcer */
+    border-radius: 15px; /* bordas arredondadas do retângulo */
+    margin-bottom: 10px;
+  }
+</style>
+
+  <nav>
+    <a href="#sobre">Sobre</a>
+    <a href="#projetos">Projetos</a>
+    <a href="#contato">Contato</a>
+  </nav>
+
+  <section id="sobre">
+    <h2>Sobre Mim</h2>
+    <p>Analista de Dados Júnior com foco em Python e a especializar-me em Data Science. Cursando Sistemas de Informação (IFBA) e com experiência prática em ambiente hospitalar, sou apaixonado por transformar dados em insights acionáveis. Utilizo as minhas competências em SQL, Python e Power BI para unir análise eficiente e visualização intuitiva, com o objetivo de resolver problemas e gerar valor.</p>
+  </section>
+
+  <section id="projetos">
+    <h2>Projetos</h2>
+    <div class="project">
+      <h3>Análise de Vendas para Otimização de E-commerce</h3><br>
+      <p><p><strong>Situação:</strong> Uma empresa de e-commerce precisava de tomar decisões mais estratégicas, mas enfrentava dificuldades para extrair informações úteis do seu grande volume de dados de vendas.<p>
+       <br>
+        <p><strong>Tarefa:</strong> A minha missão foi transformar esses dados brutos em insights claros, identificando os produtos mais importantes, os principais mercados e os padrões de compra dos clientes.<p>
+       <br>
+        <p><strong>Ação:</strong><p>
+        <p>Utilizei Python e Pandas para realizar uma limpeza e tratamento rigorosos nos dados, garantindo a sua qualidade e fiabilidade;<p>
+        <p>Desenvolvi um script para automatizar a análise, focando em métricas chave como o top 10 de produtos, o país com maior volume de compras e a frequência de pedidos;<p>  
+        <p>Implementei a geração automática de relatórios em CSV e Excel, facilitando a comunicação dos resultados com a equipa de gestão.<p>  
+        <br>
+        <p><strong>Resultado:</strong> A análise forneceu insights que levaram a uma melhoria direta na gestão de stock e permitiram a criação de campanhas de marketing mais eficazes e direcionadas. A automação dos relatórios reduziu significativamente o tempo gasto em tarefas manuais, libertando a equipa para se focar em ações estratégicas.<p>    
+        <p>
+          <br>
+        <p><a href="https://github.com/caio2203/projeto_ecommerce" target="_blank" rel="noopener noreferrer" class="github-link"><strong>Confira no Git Hub!</strong></a></p>
+</div>
+
+<style>
+.github-link {
+    color: var(--accent-color);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    padding: 0.3rem 0;
+}
+
+.github-link:hover {
+    text-decoration: underline;
+    color: var(--border-color);
+    transform: translateY(-1px);
+}
+
+[data-theme="dark"] .github-link {
+    color: #ffffff; /* Azul mais claro para melhor contraste no escuro */
+}
+
+[data-theme="dark"] .github-link:hover {
+    color: #7bb0ff; /* Azul ainda mais claro no hover */
+}
+</style>
+
+    </div>
+    <div class="project">
+      <h3>Projeto 2</h3>
+      <p>EM PROCESSO.</p>
+    </div>
+  </section>
+
+  <section id="contato">
+  <h2>Contato</h2>
+  
+  <div class="contact-item">
+    <i class="fas fa-envelope"></i>
+    <span>caiogoncalvesvieira11@gmail.com</span>
+  </div>
+  
+  <div class="contact-item">
+    <i class="fas fa-phone"></i>
+    <span>(77)99833-3160</span>
+  </div>
+  
+  <a class="contact-item github-contact" href="https://github.com/caio2203" target="_blank">
+  <i class="fab fa-github"></i>
+  <span>caio2203</span>
+</a>
+
+<style>
+  /* Estilo para o item de contato do GitHub */
+  .github-contact, 
+  .github-contact i, 
+  .github-contact span {
+    color: var(--text-color); /* Cor do texto padrão (preto no tema claro) */
+    background-color: transparent;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  /* Tema escuro - mantém branco */
+  [data-theme="dark"] .github-contact,
+  [data-theme="dark"] .github-contact i,
+  [data-theme="dark"] .github-contact span {
+    color: white;
+  }
+  
+  /* Remove qualquer efeito de hover */
+  .github-contact:hover,
+  .github-contact:hover i,
+  .github-contact:hover span {
+    text-decoration: none;
+    color: inherit;
+  }
+</style>
+  
+  <!-- (isso é um comentário apenas tire as) <a class="contact-item" href="https://www.linkedin.com/in/caio-gon%C3%A7alves-vieira-77642630b/" target="_blank" style="color: white; background-color: transparent; text-decoration: none;">
+    <i class="fab fa-linkedin"></i>
+    <span>LinkedIn: </span> -->
+  </a>
+  
+</section>
+
+  <footer>
+    <p>&copy; 2025 Caio Gonçalves Vieira. Todos os direitos reservados.</p>
+  </footer>
+
+  <a href="#" id="back-to-top" title="Voltar ao topo">↑</a>
+
+ <script>
+  // Executa o script quando o conteúdo da página estiver totalmente carregado
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    // --- SELEÇÃO DE ELEMENTOS ---
+    const floatingImages = document.querySelectorAll('.floating-image');
+    const profileImage = document.querySelector('.profile-image');
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeIcon = themeToggle.querySelector('i');
+    const backToTop = document.getElementById('back-to-top');
+
+    // --- LÓGICA DO TEMA (LIGHT/DARK) ---
+    // Função para atualizar o ícone do botão de tema
+    function updateThemeIcon(theme) {
+      if (theme === 'dark') {
+        themeIcon.classList.remove('fa-moon');
+        themeIcon.classList.add('fa-sun');
+      } else {
+        themeIcon.classList.remove('fa-sun');
+        themeIcon.classList.add('fa-moon');
+      }
+    }
+    
+    // Função para alternar o tema
+    function toggleTheme() {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      updateThemeIcon(newTheme);
+    }
+
+    // Verificar tema salvo no localStorage ao carregar a página
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      updateThemeIcon(savedTheme);
+    }
+    
+    // Adicionar evento de clique ao botão de tema
+    themeToggle.addEventListener('click', toggleTheme);
+    
+    // --- LÓGICA DAS ANIMAÇÕES DE ROLAGEM E OBSERVERS ---
+    // Inicializa observador de interseção para os ícones flutuantes
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        entry.target.classList.toggle('active', entry.isIntersecting);
+      });
+    }, { threshold: 0.1 });
+
+    floatingImages.forEach(img => observer.observe(img));
+
+    // Evento de rolagem para múltiplos efeitos (MAIS EFICIENTE)
+    window.addEventListener('scroll', function() {
+      const scrollPosition = window.scrollY;
+      
+      // 1. Efeito parallax na imagem de perfil
+      if (profileImage) {
+        profileImage.style.transform = `translateY(${scrollPosition * 0.2}px)`;
+      }
+      
+      // 2. Movimento das imagens flutuantes
+      floatingImages.forEach((img, index) => {
+        const speed = 0.3 + (index * 0.1);
+        const offset = scrollPosition * speed;
+        img.style.transform = `translateY(${offset * 0.5}px) rotate(${offset * 0.2}deg) scale(${1 + Math.sin(offset * 0.01) * 0.1})`;
+      });
+
+      // 3. Lógica para mostrar o botão "Voltar ao topo"
+      if (scrollPosition > 300) {
+        backToTop.classList.add('visible');
+      } else {
+        backToTop.classList.remove('visible');
+      }
+    });
+  });
+</script>
+</body>
+</html>
