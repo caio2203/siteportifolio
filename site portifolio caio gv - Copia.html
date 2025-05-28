@@ -202,6 +202,30 @@
       margin-bottom: 1rem;
     }
 
+    .github-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--accent-color);
+      text-decoration: none;
+      font-family: inherit;
+      font-size: inherit;
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--accent-color);
+      border-radius: 4px;
+      transition: all 0.3s ease;
+      background: transparent;
+    }
+
+    .github-link:hover {
+      background: rgba(100, 255, 218, 0.1);
+      transform: translateX(5px);
+    }
+
+    .github-link:visited {
+      color: var(--accent-color);
+    }
+
     .contact-item {
       display: flex;
       align-items: center;
@@ -212,6 +236,10 @@
       margin-bottom: 1rem;
       border: 1px solid var(--border-color);
       transition: all 0.3s ease;
+      text-decoration: none;
+      color: inherit;
+      font-family: inherit;
+      font-size: inherit;
     }
 
     .contact-item:hover {
@@ -219,8 +247,13 @@
       border-color: var(--accent-color);
     }
 
+    .contact-item:visited {
+      color: inherit;
+    }
+
     .contact-item i {
       color: var(--accent-color);
+      font-size: 1.2rem;
     }
 
     #theme-toggle {
