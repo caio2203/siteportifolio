@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br" data-theme="light">
+<html lang="pt-br" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,35 +7,33 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
     :root {
-      --background: #f8f9fa;
-      --text-color: #2d3436;
-      --header-gradient-start: #00b4db;
-      --header-gradient-end: #0083b0;
+      --background: #E8F1F2;
+      --text-color: #13293D;
+      --header-gradient-start: #B3E0FF;
+      --header-gradient-end: #7FCDFF;
       --section-background: white;
-      --project-background: #ffffff;
-      --nav-background: rgba(255, 255, 255, 0.95);
-      --nav-text: #2d3436;
-      --accent-color: #00b4db;
-      --shadow-color: rgba(0, 0, 0, 0.08);
-      --shadow-hover: rgba(0, 0, 0, 0.15);
-      --border-color: #00b4db;
-      --card-border: rgba(0, 180, 219, 0.2);
+      --project-background: #F0F8FF;
+      --nav-background: #247BA0;
+      --nav-text: white;
+      --accent-color: #006494;
+      --shadow-color: rgba(0, 0, 0, 0.1);
+      --shadow-hover: rgba(0, 0, 0, 0.1);
+      --border-color: #006494;
     }
 
     [data-theme="dark"] {
-      --background: #1a1b1e;
-      --text-color: #f8f9fa;
-      --header-gradient-start: #004e92;
-      --header-gradient-end: #000428;
-      --section-background: #2d3436;
-      --project-background: #2d3436;
-      --nav-background: rgba(45, 52, 54, 0.95);
-      --nav-text: #f8f9fa;
-      --accent-color: #00b4db;
+      --background: #13293D;
+      --text-color: #E8F1F2;
+      --header-gradient-start: #006494;
+      --header-gradient-end: #247BA0;
+      --section-background: rgba(0, 0, 0, 0.1);
+      --project-background: #006494;
+      --nav-background: #247BA0;
+      --nav-text: #E8F1F2;
+      --accent-color: #1B98E0;
       --shadow-color: rgba(0, 0, 0, 0.2);
-      --shadow-hover: rgba(0, 0, 0, 0.3);
-      --border-color: #00b4db;
-      --card-border: rgba(0, 180, 219, 0.1);
+      --shadow-hover: rgba(0, 0, 0, 0.2);
+      --border-color: #1B98E0;
     }
 
     * {
@@ -268,6 +266,35 @@
         padding: 4rem 1rem;
       }
     }
+
+    #back-to-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: var(--accent-color);
+      color: white;
+      width: 3rem;
+      height: 3rem;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-decoration: none;
+      font-size: 1.5rem;
+      box-shadow: 0 2px 10px var(--shadow-color);
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 99;
+    }
+
+    #back-to-top.visible {
+      opacity: 1;
+    }
+
+    #back-to-top:hover {
+      transform: scale(1.1);
+      background: var(--nav-background);
+    }
   </style>
 </head>
 <body>
@@ -351,10 +378,15 @@
     <p>&copy; 2025 Caio Gonçalves Vieira. Todos os direitos reservados.</p>
   </footer>
 
+  <a href="#" id="back-to-top" title="Voltar ao topo">
+    <i class="fas fa-arrow-up"></i>
+  </a>
+
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       const themeToggle = document.getElementById('theme-toggle');
       const themeIcon = themeToggle.querySelector('i');
+      const backToTop = document.getElementById('back-to-top');
       
       function updateThemeIcon(theme) {
         if (theme === 'dark') {
@@ -374,15 +406,28 @@
         updateThemeIcon(newTheme);
       }
 
-      const savedTheme = localStorage.getItem('theme');
-      if (savedTheme) {
-        document.documentElement.setAttribute('data-theme', savedTheme);
-        updateThemeIcon(savedTheme);
-      }
+      const savedTheme = localStorage.getItem('theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      updateThemeIcon(savedTheme);
       
       themeToggle.addEventListener('click', toggleTheme);
 
-      // Animação para os ícones flutuantes
+      window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 300) {
+          backToTop.classList.add('visible');
+        } else {
+          backToTop.classList.remove('visible');
+        }
+      });
+
+      backToTop.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      });
+
       const floatingImages = document.querySelectorAll('.floating-image');
       
       floatingImages.forEach((img, index) => {
@@ -390,7 +435,6 @@
         img.style.animationDelay = `${index * 0.5}s`;
       });
 
-      // Adiciona classe active aos elementos quando eles entram na viewport
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
