@@ -22,25 +22,25 @@
     }
 
     [data-theme="dark"] {
-      --background: #13293D;
-      --text-color: #E8F1F2;
-      --header-gradient-start: #006494;
-      --header-gradient-end: #247BA0;
-      --section-background: rgba(0, 0, 0, 0.1);
-      --project-background: #006494;
-      --nav-background: #247BA0;
-      --nav-text: #E8F1F2;
-      --accent-color: #1B98E0;
+      --background: #0a192f;
+      --text-color: #8892b0;
+      --header-gradient-start: #0a192f;
+      --header-gradient-end: #112240;
+      --section-background: rgba(17, 34, 64, 0.1);
+      --project-background: #112240;
+      --nav-background: rgba(10, 25, 47, 0.85);
+      --nav-text: #64ffda;
+      --accent-color: #64ffda;
       --shadow-color: rgba(0, 0, 0, 0.2);
-      --shadow-hover: rgba(0, 0, 0, 0.2);
-      --border-color: #1B98E0;
+      --shadow-hover: rgba(100, 255, 218, 0.1);
+      --border-color: #233554;
     }
 
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: 'Calibre', 'Inter', 'San Francisco', 'SF Pro Text', -apple-system, system-ui, sans-serif;
     }
 
     html {
@@ -55,39 +55,78 @@
       transition: all 0.3s ease;
     }
 
+    /* Animação de fundo */
+    .background-animation {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      opacity: 0.15;
+      pointer-events: none;
+    }
+
+    .background-animation::before,
+    .background-animation::after {
+      content: '';
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      background: var(--accent-color);
+      border-radius: 50%;
+      filter: blur(100px);
+      animation: moveGradient 15s ease infinite;
+    }
+
+    .background-animation::before {
+      top: 20%;
+      left: 20%;
+      animation-delay: 0s;
+    }
+
+    .background-animation::after {
+      bottom: 20%;
+      right: 20%;
+      animation-delay: -7.5s;
+    }
+
+    @keyframes moveGradient {
+      0% { transform: translate(0, 0); }
+      25% { transform: translate(100px, 100px); }
+      50% { transform: translate(0, 200px); }
+      75% { transform: translate(-100px, 100px); }
+      100% { transform: translate(0, 0); }
+    }
+
     header {
-      background: linear-gradient(135deg, var(--header-gradient-start), var(--header-gradient-end));
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
       position: relative;
-      overflow: hidden;
+      padding: 0 2rem;
+      backdrop-filter: blur(10px);
     }
 
     .header-content {
-      text-align: center;
+      max-width: 1000px;
+      text-align: left;
       z-index: 2;
-      padding: 2rem;
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
-      border-radius: 20px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
       animation: fadeInUp 1s ease;
     }
 
     .header-content h1 {
-      font-size: 3.5rem;
+      font-size: 4.5rem;
       margin-bottom: 1rem;
-      color: white;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+      color: #ccd6f6;
+      font-weight: 600;
     }
 
     .header-content p {
-      font-size: 1.2rem;
-      color: rgba(255, 255, 255, 0.9);
-      max-width: 600px;
-      margin: 0 auto;
+      font-size: 1.25rem;
+      color: var(--accent-color);
+      margin-bottom: 2rem;
     }
 
     nav {
@@ -97,112 +136,70 @@
       width: 100%;
       top: 0;
       z-index: 1000;
-      padding: 1rem;
+      padding: 1.5rem;
       display: flex;
-      justify-content: center;
+      justify-content: flex-end;
       gap: 2rem;
-      box-shadow: 0 2px 10px var(--shadow-color);
       transition: all 0.3s ease;
     }
 
     nav a {
       color: var(--nav-text);
       text-decoration: none;
+      font-size: 0.9rem;
       font-weight: 500;
-      padding: 0.5rem 1.5rem;
-      border-radius: 8px;
+      padding: 0.5rem;
       transition: all 0.3s ease;
       position: relative;
     }
 
-    nav a::after {
+    nav a::before {
       content: '';
       position: absolute;
-      bottom: 0;
-      left: 50%;
       width: 0;
       height: 2px;
-      background: var(--accent-color);
-      transition: all 0.3s ease;
-      transform: translateX(-50%);
+      bottom: 0;
+      left: 0;
+      background-color: var(--accent-color);
+      transition: width 0.3s ease;
     }
 
-    nav a:hover::after {
+    nav a:hover::before {
       width: 100%;
     }
 
     section {
-      padding: 6rem 2rem;
-      max-width: 1200px;
+      padding: 100px 2rem;
+      max-width: 1000px;
       margin: 0 auto;
-      position: relative;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.6s ease;
+    }
+
+    section.active {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     .project {
       background: var(--project-background);
-      border-radius: 16px;
+      border-radius: 4px;
       padding: 2rem;
       margin-bottom: 2rem;
-      box-shadow: 0 4px 20px var(--shadow-color);
-      border: 1px solid var(--card-border);
+      border: 1px solid var(--border-color);
       transition: all 0.3s ease;
     }
 
     .project:hover {
       transform: translateY(-5px);
-      box-shadow: 0 8px 30px var(--shadow-hover);
+      box-shadow: 0 20px 30px -15px var(--shadow-hover);
     }
 
     .project h3 {
-      color: var(--accent-color);
+      color: #ccd6f6;
       font-size: 1.5rem;
       margin-bottom: 1rem;
-    }
-
-    .floating-images {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-    }
-
-    .floating-image {
-      position: absolute;
-      width: 60px;
-      height: 60px;
-      filter: brightness(0) invert(1);
-      opacity: 0.6;
-      transition: all 0.5s ease;
-    }
-
-    .floating-image:hover {
-      transform: scale(1.2);
-      opacity: 0.8;
-    }
-
-    #theme-toggle {
-      position: fixed;
-      top: 1rem;
-      right: 1rem;
-      background: var(--accent-color);
-      color: white;
-      width: 3rem;
-      height: 3rem;
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      z-index: 1000;
-      border: none;
-      box-shadow: 0 2px 10px var(--shadow-color);
-      transition: all 0.3s ease;
-    }
-
-    #theme-toggle:hover {
-      transform: scale(1.1);
-      background: var(--header-gradient-end);
     }
 
     .contact-item {
@@ -211,68 +208,49 @@
       gap: 1rem;
       padding: 1rem;
       background: var(--project-background);
-      border-radius: 12px;
+      border-radius: 4px;
       margin-bottom: 1rem;
+      border: 1px solid var(--border-color);
       transition: all 0.3s ease;
-      border: 1px solid var(--card-border);
     }
 
     .contact-item:hover {
       transform: translateX(10px);
-      box-shadow: 0 4px 15px var(--shadow-color);
+      border-color: var(--accent-color);
     }
 
     .contact-item i {
       color: var(--accent-color);
-      font-size: 1.5rem;
     }
 
-    footer {
-      background: linear-gradient(135deg, var(--header-gradient-start), var(--header-gradient-end));
-      color: white;
-      text-align: center;
-      padding: 2rem;
-      margin-top: 4rem;
+    #theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: transparent;
+      color: var(--accent-color);
+      width: 3rem;
+      height: 3rem;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      z-index: 1000;
+      border: 1px solid var(--accent-color);
+      transition: all 0.3s ease;
     }
 
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @media (max-width: 768px) {
-      .header-content h1 {
-        font-size: 2.5rem;
-      }
-
-      nav {
-        flex-direction: column;
-        padding: 0.5rem;
-      }
-
-      nav a {
-        width: 100%;
-        text-align: center;
-        padding: 0.8rem;
-      }
-
-      section {
-        padding: 4rem 1rem;
-      }
+    #theme-toggle:hover {
+      background: rgba(100, 255, 218, 0.1);
     }
 
     #back-to-top {
       position: fixed;
       bottom: 2rem;
       right: 2rem;
-      background: var(--accent-color);
-      color: white;
+      background: transparent;
+      color: var(--accent-color);
       width: 3rem;
       height: 3rem;
       border-radius: 50%;
@@ -280,9 +258,9 @@
       justify-content: center;
       align-items: center;
       text-decoration: none;
-      font-size: 1.5rem;
-      box-shadow: 0 2px 10px var(--shadow-color);
+      font-size: 1.2rem;
       opacity: 0;
+      border: 1px solid var(--accent-color);
       transition: all 0.3s ease;
       z-index: 99;
     }
@@ -292,35 +270,63 @@
     }
 
     #back-to-top:hover {
-      transform: scale(1.1);
-      background: var(--nav-background);
+      background: rgba(100, 255, 218, 0.1);
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-color);
+      font-size: 0.9rem;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .header-content h1 {
+        font-size: 3rem;
+      }
+
+      nav {
+        padding: 1rem;
+        justify-content: center;
+      }
+
+      section {
+        padding: 60px 1rem;
+      }
     }
   </style>
 </head>
 <body>
+  <div class="background-animation"></div>
+  
   <button id="theme-toggle">
     <i class="fas fa-moon"></i>
   </button>
-
-  <header>
-    <div class="floating-images">
-      <img src="https://cdn-icons-png.flaticon.com/512/2777/2777154.png" alt="Python" class="floating-image">
-      <img src="https://cdn-icons-png.flaticon.com/512/4492/4492311.png" alt="SQL" class="floating-image">
-      <img src="https://cdn-icons-png.flaticon.com/512/2103/2103633.png" alt="Power BI" class="floating-image">
-      <img src="https://cdn-icons-png.flaticon.com/512/2282/2282188.png" alt="Data Analysis" class="floating-image">
-    </div>
-    
-    <div class="header-content">
-      <h1>Caio Gonçalves Vieira</h1>
-      <p>Analista/Cientista de Dados | Aprimorando suas análises</p>
-    </div>
-  </header>
 
   <nav>
     <a href="#sobre">Sobre</a>
     <a href="#projetos">Projetos</a>
     <a href="#contato">Contato</a>
   </nav>
+
+  <header>
+    <div class="header-content">
+      <p>Olá, meu nome é</p>
+      <h1>Caio Gonçalves Vieira</h1>
+      <p>Analista/Cientista de Dados | Aprimorando suas análises</p>
+    </div>
+  </header>
 
   <section id="sobre">
     <h2>Sobre Mim</h2>
@@ -428,13 +434,6 @@
         });
       });
 
-      const floatingImages = document.querySelectorAll('.floating-image');
-      
-      floatingImages.forEach((img, index) => {
-        img.style.animation = `float ${3 + index * 0.5}s ease-in-out infinite`;
-        img.style.animationDelay = `${index * 0.5}s`;
-      });
-
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
@@ -443,7 +442,7 @@
         });
       }, { threshold: 0.1 });
 
-      document.querySelectorAll('section, .project').forEach(el => observer.observe(el));
+      document.querySelectorAll('section').forEach(el => observer.observe(el));
     });
   </script>
 </body>
