@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="pt-br" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meu Portfólio</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    :root {
+      --background: #E8F1F2;
+      --text-color: #13293D;
+      --header-gradient-start: #B3E0FF;
+      --header-gradient-end: #7FCDFF;
+      --section-background: white;
+      --project-background: #F0F8FF;
+      --nav-background: #247BA0;
+      --nav-text: white;
+      --accent-color: #006494;
+      --shadow-color: rgba(0, 0, 0, 0.1);
+      --shadow-hover: rgba(0, 0, 0, 0.1);
+      --border-color: #006494;
+    }
+
+    [data-theme="dark"] {
+      --background: #0a192f;
+      --text-color: #8892b0;
+      --header-gradient-start: #0a192f;
+      --header-gradient-end: #112240;
+      --section-background: rgba(17, 34, 64, 0.1);
+      --project-background: #112240;
+      --nav-background: rgba(10, 25, 47, 0.85);
+      --nav-text: #64ffda;
+      --accent-color: #64ffda;
+      --shadow-color: rgba(0, 0, 0, 0.2);
+      --shadow-hover: rgba(100, 255, 218, 0.1);
+      --border-color: #233554;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Calibre', 'Inter', 'San Francisco', 'SF Pro Text', -apple-system, system-ui, sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--background);
+      color: var(--text-color);
+      line-height: 1.8;
+      overflow-x: hidden;
+      transition: all 0.3s ease;
+    }
+
+    /* Animação de fundo */
+    .background-animation {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      opacity: 0.15;
+      pointer-events: none;
+    }
+
+    .background-animation::before,
+    .background-animation::after {
+      content: '';
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      background: var(--accent-color);
+      border-radius: 50%;
+      filter: blur(100px);
+      animation: moveGradient 15s ease infinite;
+    }
+
+    .background-animation::before {
+      top: 20%;
+      left: 20%;
+      animation-delay: 0s;
+    }
+
+    .background-animation::after {
+      bottom: 20%;
+      right: 20%;
+      animation-delay: -7.5s;
+    }
+
+    @keyframes moveGradient {
+      0% { transform: translate(0, 0); }
+      25% { transform: translate(100px, 100px); }
+      50% { transform: translate(0, 200px); }
+      75% { transform: translate(-100px, 100px); }
+      100% { transform: translate(0, 0); }
+    }
+
+    header {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      padding: 0 2rem;
+      backdrop-filter: blur(10px);
+    }
+
+    .header-content {
+      max-width: 1000px;
+      text-align: left;
+      z-index: 2;
+      animation: fadeInUp 1s ease;
+    }
+
+    .header-content h1 {
+      font-size: 4.5rem;
+      margin-bottom: 1rem;
+      color: #ccd6f6;
+      font-weight: 600;
+    }
+
+    .header-content p {
+      font-size: 1.25rem;
+      color: var(--accent-color);
+      margin-bottom: 2rem;
+    }
+
+    nav {
+      background: var(--nav-background);
+      backdrop-filter: blur(10px);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      padding: 1.5rem;
+      display: flex;
+      justify-content: flex-end;
+      gap: 2rem;
+      transition: all 0.3s ease;
+    }
+
+    nav a {
+      color: var(--nav-text);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      padding: 0.5rem;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    nav a::before {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background-color: var(--accent-color);
+      transition: width 0.3s ease;
+    }
+
+    nav a:hover::before {
+      width: 100%;
+    }
+
+    section {
+      padding: 100px 2rem;
+      max-width: 1000px;
+      margin: 0 auto;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.6s ease;
+    }
+
+    section.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .project {
+      background: var(--project-background);
+      border-radius: 4px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      border: 1px solid var(--border-color);
+      transition: all 0.3s ease;
+    }
+
+    .project:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 30px -15px var(--shadow-hover);
+    }
+
+    .project h3 {
+      color: #ccd6f6;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .github-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--accent-color);
+      text-decoration: none;
+      font-family: inherit;
+      font-size: inherit;
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--accent-color);
+      border-radius: 4px;
+      transition: all 0.3s ease;
+      background: transparent;
+    }
+
+    .github-link:hover {
+      background: rgba(100, 255, 218, 0.1);
+      transform: translateX(5px);
+    }
+
+    .github-link:visited {
+      color: var(--accent-color);
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      background: var(--project-background);
+      border-radius: 4px;
+      margin-bottom: 1rem;
+      border: 1px solid var(--border-color);
+      transition: all 0.3s ease;
+      text-decoration: none;
+      color: inherit;
+      font-family: inherit;
+      font-size: inherit;
+    }
+
+    .contact-item:hover {
+      transform: translateX(10px);
+      border-color: var(--accent-color);
+    }
+
+    .contact-item:visited {
+      color: inherit;
+    }
+
+    .contact-item i {
+      color: var(--accent-color);
+      font-size: 1.2rem;
+    }
+
+    #theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: transparent;
+      color: var(--accent-color);
+      width: 3rem;
+      height: 3rem;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      z-index: 1000;
+      border: 1px solid var(--accent-color);
+      transition: all 0.3s ease;
+    }
+
+    #theme-toggle:hover {
+      background: rgba(100, 255, 218, 0.1);
+    }
+
+    #back-to-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: transparent;
+      color: var(--accent-color);
+      width: 3rem;
+      height: 3rem;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-decoration: none;
+      font-size: 1.2rem;
+      opacity: 0;
+      border: 1px solid var(--accent-color);
+      transition: all 0.3s ease;
+      z-index: 99;
+    }
+
+    #back-to-top.visible {
+      opacity: 1;
+    }
+
+    #back-to-top:hover {
+      background: rgba(100, 255, 218, 0.1);
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-color);
+      font-size: 0.9rem;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .header-content h1 {
+        font-size: 3rem;
+      }
+
+      nav {
+        padding: 1rem;
+        justify-content: center;
+      }
+
+      section {
+        padding: 60px 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="background-animation"></div>
+  
+  <button id="theme-toggle">
+    <i class="fas fa-moon"></i>
+  </button>
+
+  <nav>
+    <a href="#sobre">Sobre</a>
+    <a href="#projetos">Projetos</a>
+    <a href="#contato">Contato</a>
+  </nav>
+
+  <header>
+    <div class="header-content">
+      <p>Olá, meu nome é</p>
+      <h1>Caio Gonçalves Vieira</h1>
+      <p>Analista/Cientista de Dados | Aprimorando suas análises</p>
+    </div>
+  </header>
+
+  <section id="sobre">
+    <h2>Sobre Mim</h2>
+    <p>Analista de Dados Júnior com foco em Python e a especializar-me em Data Science. Cursando Sistemas de Informação (IFBA) e com experiência prática em ambiente hospitalar, sou apaixonado por transformar dados em insights acionáveis. Utilizo as minhas competências em SQL, Python e Power BI para unir análise eficiente e visualização intuitiva, com o objetivo de resolver problemas e gerar valor.</p>
+  </section>
+
+  <section id="projetos">
+    <h2>Projetos</h2> <br>
+    <div class="project">
+      <h3>Análise de Vendas para Otimização de E-commerce</h3>
+      <p><strong>Situação:</strong> Uma empresa de e-commerce precisava de tomar decisões mais estratégicas, mas enfrentava dificuldades para extrair informações úteis do seu grande volume de dados de vendas.</p>
+      
+      <p><strong>Tarefa:</strong> A minha missão foi transformar esses dados brutos em insights claros, identificando os produtos mais importantes, os principais mercados e os padrões de compra dos clientes.</p>
+      
+      <p><strong>Ação:</strong></p>
+      <ul>
+        <li>Utilizei Python e Pandas para realizar uma limpeza e tratamento rigorosos nos dados, garantindo a sua qualidade e fiabilidade;</li>
+        <li>Desenvolvi um script para automatizar a análise, focando em métricas chave como o top 10 de produtos, o país com maior volume de compras e a frequência de pedidos;</li>
+        <li>Implementei a geração automática de relatórios em CSV e Excel, facilitando a comunicação dos resultados com a equipa de gestão.</li>
+      </ul>
+      
+      <p><strong>Resultado:</strong> A análise forneceu insights que levaram a uma melhoria direta na gestão de stock e permitiram a criação de campanhas de marketing mais eficazes e direcionadas. A automação dos relatórios reduziu significativamente o tempo gasto em tarefas manuais, libertando a equipa para se focar em ações estratégicas.</p>
+      <br>
+      <p><a href="https://github.com/caio2203/projeto_ecommerce" target="_blank" rel="noopener noreferrer" class="github-link">
+        <i class="fab fa-github"></i> Ver no GitHub
+      </a></p>
+    </div>
+    
+    <div class="project">
+      <h3>Projeto 2</h3>
+      <p>EM PROCESSO.</p>
+    </div>
+  </section>
+
+  <section id="contato">
+    <h2>Contato</h2>
+    
+    <div class="contact-item">
+      <i class="fas fa-envelope"></i>
+      <span>caiogoncalvesvieira11@gmail.com</span>
+    </div>
+    
+    <div class="contact-item">
+      <i class="fas fa-phone"></i>
+      <span>(77)99833-3160</span>
+    </div>
+    
+    <a class="contact-item" href="https://github.com/caio2203" target="_blank">
+      <i class="fab fa-github"></i>
+      <span>caio2203</span>
+    </a>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Caio Gonçalves Vieira. Todos os direitos reservados.</p>
+  </footer>
+
+  <a href="#" id="back-to-top" title="Voltar ao topo">
+    <i class="fas fa-arrow-up"></i>
+  </a>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const themeToggle = document.getElementById('theme-toggle');
+      const themeIcon = themeToggle.querySelector('i');
+      const backToTop = document.getElementById('back-to-top');
+      
+      function updateThemeIcon(theme) {
+        if (theme === 'dark') {
+          themeIcon.classList.remove('fa-moon');
+          themeIcon.classList.add('fa-sun');
+        } else {
+          themeIcon.classList.remove('fa-sun');
+          themeIcon.classList.add('fa-moon');
+        }
+      }
+      
+      function toggleTheme() {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        updateThemeIcon(newTheme);
+      }
+
+      const savedTheme = localStorage.getItem('theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      updateThemeIcon(savedTheme);
+      
+      themeToggle.addEventListener('click', toggleTheme);
+
+      window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 300) {
+          backToTop.classList.add('visible');
+        } else {
+          backToTop.classList.remove('visible');
+        }
+      });
+
+      backToTop.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      });
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('active');
+          }
+        });
+      }, { threshold: 0.1 });
+
+      document.querySelectorAll('section').forEach(el => observer.observe(el));
+    });
+  </script>
+</body>
+</html>
